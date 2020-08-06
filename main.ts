@@ -3,7 +3,7 @@
 import * as fs from "fs";
 
 let tasksTxt: string = "";
-let taskList: string [] = [];
+let taskList: string[] = [];
 tasksTxt = fs.readFileSync("tasks.txt", "utf8");
 taskList = tasksTxt.split("\n");
 
@@ -25,13 +25,17 @@ if (process.argv.length === 2) {
     fs.appendFileSync("tasks.txt", `\n${process.argv[3]}`);
   }
 } else if (process.argv[2] === "-r") {
+  const removeNumber = process.argv[3].split(",").map(Number);
   if (!process.argv[3]) {
     console.log("Unable to remove: no index provided");
+  } else if (removeNumber[0] > taskList.length - 1) {
+    console.log("Unable to remove: index is out of bound");
+  } else if (typeof process.argv[3] !== 'number') {
+    console.log('Unable to remove: index is not a number');
   } else {
-    const arr = process.argv[3].split(',').map(Number);
-    taskList.splice(arr[0] - 1, 1);
-    const newList: string = taskList.join('\n');
-    fs.writeFileSync('tasks.txt', newList);
+    taskList.splice(removeNumber[0] - 1, 1);
+    const newList: string = taskList.join("\n");
+    fs.writeFileSync("tasks.txt", newList);
   }
 } else if (process.argv[2] === "-c") {
 }

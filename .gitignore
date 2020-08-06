@@ -1,3 +1,4 @@
 .DS_Store
 self-practice/
 node_modules
+.*
